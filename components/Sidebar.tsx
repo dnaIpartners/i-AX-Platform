@@ -1,5 +1,5 @@
 import React from 'react';
-import { Circle, LogOut } from 'lucide-react';
+import { Circle, LogOut, Settings } from 'lucide-react';
 
 export interface SidebarMenuItem {
   id: string;
@@ -14,9 +14,10 @@ interface SidebarProps {
   onModuleChange: (id: string) => void;
   onLogoClick?: () => void;
   onLogout?: () => void;
+  onOpenSettings?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeModule, onModuleChange, onLogoClick, onLogout }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeModule, onModuleChange, onLogoClick, onLogout, onOpenSettings }) => {
   return (
     <aside className="w-80 bg-white border-r border-slate-200 flex flex-col flex-shrink-0 z-20 shadow-sm h-full font-sans">
         <div className="p-6 border-b border-slate-100 flex items-center justify-between flex-shrink-0">
@@ -26,13 +27,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeModule, onMod
             >
               IPARTNERS
             </div>
-            <button
-                onClick={onLogout}
-                title="초기 화면으로 이동 (로그아웃)"
-                className="p-2 -mr-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-all"
-            >
-                <LogOut className="w-5 h-5" />
-            </button>
+            <div className="flex items-center space-x-1">
+                <button
+                    onClick={onOpenSettings}
+                    title="API Key 관리"
+                    className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all"
+                >
+                    <Settings className="w-5 h-5" />
+                </button>
+                <button
+                    onClick={onLogout}
+                    title="초기 화면으로 이동 (로그아웃)"
+                    className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-all"
+                >
+                    <LogOut className="w-5 h-5" />
+                </button>
+            </div>
         </div>
         
         <div className="flex-1 overflow-y-auto py-4">

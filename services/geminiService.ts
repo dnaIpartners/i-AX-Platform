@@ -1,8 +1,18 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { RFPAnalysis } from "../types";
+import { getActiveGeminiKey } from "./keyService";
 
-// Initialize Gemini Client
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+/**
+ * Helper to get a fresh Gemini client with the latest key.
+ * This ensures we use the key from localStorage if it's updated.
+ */
+const getClient = () => {
+  const apiKey = getActiveGeminiKey();
+  if (!apiKey) {
+    throw new Error("API Key is missing. Please configure it in Settings.");
+  }
+  return new GoogleGenAI({ apiKey });
+};
 
 /**
  * Analyzes the raw RFP text and returns a structured JSON object.
@@ -23,7 +33,7 @@ export const analyzeRFP = async (rfpText: string): Promise<RFPAnalysis> => {
     """
   `;
 
-  const response = await ai.models.generateContent({
+  const response = await getClient().models.generateContent({
     model: "gemini-3-pro-preview", // Using Pro for complex reasoning and extraction
     contents: prompt,
     config: {
@@ -114,7 +124,7 @@ export const chatWithRFP = async (
     `;
   }
 
-  const chatSession = ai.chats.create({
+  const chatSession = getClient().chats.create({
     model: "gemini-3-flash-preview", // Flash is faster for chat
     config: {
       systemInstruction: systemInstruction,

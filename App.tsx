@@ -6,6 +6,7 @@ import { SearchOptimizerView } from './components/SearchOptimizerView';
 import { GenericModuleView } from './components/GenericModuleView';
 import { ChatPage } from './components/ChatPage';
 import { LandingPage } from './components/LandingPage';
+import { KeySettingsModal } from './components/KeySettingsModal';
 import { RFPAnalysis } from './types';
 import { Layers } from 'lucide-react';
 
@@ -124,6 +125,7 @@ const App: React.FC = () => {
   const [analysisData, setAnalysisData] = useState<RFPAnalysis | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isKeySettingsOpen, setIsKeySettingsOpen] = useState(false);
 
   const handleLogin = () => {
     setIsAuthenticated(true);
@@ -240,11 +242,17 @@ const App: React.FC = () => {
             handleReset();
         }}
         onLogout={handleLogout}
+        onOpenSettings={() => setIsKeySettingsOpen(true)}
       />
 
       <main className="flex-1 h-full overflow-hidden relative">
         {renderContent()}
       </main>
+
+      <KeySettingsModal 
+        isOpen={isKeySettingsOpen} 
+        onClose={() => setIsKeySettingsOpen(false)} 
+      />
     </div>
   );
 };
