@@ -73,8 +73,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeModule, onMod
 
         <div className="p-6 border-t border-slate-100 bg-slate-50/50 flex-shrink-0">
             <p className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-1">TARGET:</p>
-            <p className="text-sm text-slate-600 font-medium">전문 수행 조직</p>
-            <p className="text-xs text-slate-400">(Productivity & Quality)</p>
+            <p className="text-sm text-slate-600 font-medium">AI eXperience Lab</p>
         </div>
       </aside>
   );
