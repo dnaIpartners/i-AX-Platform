@@ -1,5 +1,4 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { RFPAnalysis } from "../types";
 import { getActiveGeminiKey } from "./keyService";
 
 /**
@@ -12,86 +11,6 @@ const getClient = () => {
     throw new Error("API Key is missing. Please configure it in Settings.");
   }
   return new GoogleGenAI({ apiKey });
-};
-
-/**
- * Analyzes the raw RFP text and returns a structured JSON object.
- */
-export const analyzeRFP = async (rfpText: string): Promise<RFPAnalysis> => {
-  const prompt = `
-    You are an expert Senior Technical Project Manager and Software Architect.
-    Analyze the following Request for Proposal (RFP) text for a website/web application construction project.
-    
-    Extract the key details and structure them according to the requested schema.
-    If specific details (like Client Name) are missing, infer a generic name or state "Unknown".
-    Provide a professional estimation for the tech stack if not explicitly mandated.
-    Identify potential risks based on vague requirements or aggressive timelines.
-    
-    RFP Content:
-    """
-    ${rfpText}
-    """
-  `;
-
-  const response = await getClient().models.generateContent({
-    model: "gemini-3-pro-preview", // Using Pro for complex reasoning and extraction
-    contents: prompt,
-    config: {
-      responseMimeType: "application/json",
-      responseSchema: {
-        type: Type.OBJECT,
-        properties: {
-          projectTitle: { type: Type.STRING, description: "The likely title of the project" },
-          clientName: { type: Type.STRING, description: "Name of the issuer" },
-          executiveSummary: { type: Type.STRING, description: "A 2-3 sentence summary of the project goals" },
-          keyObjectives: { 
-            type: Type.ARRAY, 
-            items: { type: Type.STRING },
-            description: "List of 3-5 primary business goals"
-          },
-          recommendedTechStack: {
-            type: Type.ARRAY,
-            items: { type: Type.STRING },
-            description: "Suggested technologies (e.g., React, Node.js, AWS)"
-          },
-          functionalRequirements: {
-            type: Type.ARRAY,
-            items: { type: Type.STRING },
-            description: "Key features required (e.g., CMS, User Auth, Payment)"
-          },
-          risks: {
-            type: Type.ARRAY,
-            items: {
-              type: Type.OBJECT,
-              properties: {
-                risk: { type: Type.STRING },
-                severity: { type: Type.STRING, enum: ["High", "Medium", "Low"] },
-                mitigation: { type: Type.STRING }
-              }
-            }
-          },
-          projectPhases: {
-            type: Type.ARRAY,
-            items: {
-              type: Type.OBJECT,
-              properties: {
-                phaseName: { type: Type.STRING },
-                duration: { type: Type.STRING, description: "Estimated duration (e.g., '2 weeks')" },
-                deliverables: { type: Type.ARRAY, items: { type: Type.STRING } }
-              }
-            }
-          },
-          estimatedBudgetRange: { type: Type.STRING, description: "A rough estimation string based on scope complexity" }
-        },
-        required: ["projectTitle", "executiveSummary", "keyObjectives", "recommendedTechStack", "risks", "projectPhases"]
-      }
-    }
-  });
-
-  if (response.text) {
-    return JSON.parse(response.text) as RFPAnalysis;
-  }
-  throw new Error("Failed to generate analysis");
 };
 
 /**
@@ -134,4 +53,105 @@ export const chatWithRFP = async (
 
   const result = await chatSession.sendMessage({ message: newMessage });
   return result.text;
+};
+
+/**
+ * Generate YouTube channel insight and strategy consulting report.
+ */
+export const generateYoutubeInsight = async (channelData: any, videosData: any[]) => {
+  const systemInstruction = `
+    당신은 전문적인 유튜브 채널 컨설턴트입니다.
+    제공된 유튜브 채널 정보와 최근 영상 데이터를 바탕으로 심층적인 채널 분석과 향후 운영 전략 컨설팅 리포트를 작성해주세요.
+    
+    리포트 구조:
+    1. 채널 현황 요약 (강점 및 약점)
+    2. 콘텐츠 성과 분석 (조회수, 참여도 기반 인기 요인 분석)
+    3. 타겟 오디언스 및 해시태그/키워드 분석
+    4. 향후 운영 전략 및 개선 제안 (구체적이고 실행 가능한 전략)
+    
+    전문적이고 분석적인 어조를 사용하며, Markdown 형식으로 가독성 좋게 작성해주세요.
+  `;
+
+  const prompt = `
+    채널 정보:
+    - 채널명: ${channelData.title}
+    - 구독자 수: ${channelData.subscriberCount}
+    - 총 조회수: ${channelData.viewCount}
+    - 영상 수: ${channelData.videoCount}
+    - 채널 설명: ${channelData.description}
+    
+    최근 영상 데이터 (최대 50개 요약):
+    ${videosData.map(v => `- 제목: ${v.title} (조회수: ${v.viewCount}, 좋아요: ${v.likeCount}, 댓글: ${v.commentCount}, 쇼츠여부: ${v.isShorts ? 'O' : 'X'})`).join('\n')}
+    
+    위 데이터를 바탕으로 채널 분석 및 전략 컨설팅 리포트를 작성해 주세요.
+  `;
+
+  const response = await getClient().models.generateContent({
+    model: "gemini-3.1-pro-preview",
+    contents: prompt,
+    config: {
+      systemInstruction: systemInstruction,
+    }
+  });
+
+  return response.text;
+};
+
+/**
+ * Analyze content (URL or Text) and return structured insights.
+ */
+export const analyzeContentInsight = async (inputType: 'url' | 'text', content: string) => {
+  const client = getClient();
+  const prompt = inputType === 'url' 
+    ? `다음 URL의 콘텐츠를 심층적으로 분석해주세요: ${content}`
+    : `다음 텍스트 콘텐츠를 심층적으로 분석해주세요:\n\n${content}`;
+
+  const tools = inputType === 'url' ? [{ urlContext: {} }] : undefined;
+
+  const response = await client.models.generateContent({
+    model: "gemini-3.1-pro-preview",
+    contents: prompt,
+    config: {
+      tools: tools,
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          tldr: { type: Type.STRING, description: "긴 글을 3~4줄로 압축한 핵심 요약 (Executive Summary)" },
+          keywords: { type: Type.ARRAY, items: { type: Type.STRING }, description: "글에서 추출한 주요 핵심 키워드 5~7개" },
+          toneAndManner: { type: Type.STRING, description: "글의 톤앤매너 (예: 전문적인, 감성적인, 설득력 있는, 유머러스한 등)" },
+          readability: { 
+            type: Type.OBJECT, 
+            properties: {
+              score: { type: Type.INTEGER, description: "가독성 점수 (0~100, 100이 가장 읽기 쉬움)" },
+              analysis: { type: Type.STRING, description: "가독성에 대한 상세 분석 (문장 길이, 어휘 난이도, 문단 구조, 전문 용어 사용 빈도 등 구체적인 이유)" }
+            },
+            required: ["score", "analysis"],
+            description: "가독성 평가 및 상세 분석" 
+          },
+          targetAudience: { type: Type.ARRAY, items: { type: Type.STRING }, description: "이 글이 적합한 주요 타깃 독자층 3~4개" },
+          actionableInsights: { 
+            type: Type.ARRAY, 
+            items: { 
+              type: Type.OBJECT,
+              properties: {
+                title: { type: Type.STRING, description: "개선 제안 요약 제목" },
+                description: { type: Type.STRING, description: "구체적인 개선 방법 및 이유 (어떻게 수정해야 하는지 상세히 설명)" },
+                priority: { type: Type.STRING, description: "우선순위 (높음, 중간, 낮음)" }
+              },
+              required: ["title", "description", "priority"]
+            }, 
+            description: "콘텐츠 질을 높이기 위해 보완할 점이나 개선 제안 3~5개" 
+          }
+        },
+        required: ["tldr", "keywords", "toneAndManner", "readability", "targetAudience", "actionableInsights"]
+      }
+    }
+  });
+
+  if (!response.text) {
+    throw new Error("Failed to generate content insight.");
+  }
+
+  return JSON.parse(response.text);
 };

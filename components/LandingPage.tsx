@@ -47,193 +47,165 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-indigo-100 selection:text-indigo-900 flex flex-col overflow-x-hidden">
+    <div className="min-h-screen bg-[#000510] font-sans text-[#E2E2E2] selection:bg-[#0033FF]/30 selection:text-white flex flex-col overflow-x-hidden relative">
+      {/* Background Effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Deep background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#000000] via-[#000510] to-[#001641]"></div>
+        
+        {/* Star Particles */}
+        <div className="absolute inset-0 opacity-40">
+           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at center, #E2E2E2 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
+           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at center, #E2E2E2 1.5px, transparent 1.5px)', backgroundSize: '150px 150px', transform: 'translate(30px, 30px)', opacity: 0.5 }}></div>
+        </div>
+
+        {/* Complex Blue Particle Sphere Simulation */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] md:w-[1200px] md:h-[1200px] opacity-80 mix-blend-screen flex items-center justify-center pointer-events-none">
+            {/* Core Glow */}
+            <div className="absolute w-[400px] h-[400px] bg-[#0033FF] rounded-full blur-[150px] opacity-30 animate-pulse"></div>
+            
+            {/* Concentric dotted rings to simulate the 3D wave */}
+            <div className="absolute w-full h-full animate-spin-slow" style={{ perspective: '1000px' }}>
+                {[...Array(20)].map((_, i) => (
+                    <div 
+                        key={`ring1-${i}`}
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#0033FF]"
+                        style={{
+                            width: `${100 - i * 4}%`,
+                            height: `${100 - i * 4}%`,
+                            borderStyle: 'dotted',
+                            borderWidth: '3px',
+                            transform: `translate(-50%, -50%) rotateX(${60 + i * 1.5}deg) rotateY(${i * 3}deg) translateZ(${i * 10}px)`,
+                            opacity: 0.1 + (i * 0.04),
+                            boxShadow: '0 0 10px rgba(0, 51, 255, 0.5)'
+                        }}
+                    ></div>
+                ))}
+            </div>
+            <div className="absolute w-[90%] h-[90%] animate-spin-slow-reverse" style={{ perspective: '1000px' }}>
+                {[...Array(15)].map((_, i) => (
+                    <div 
+                        key={`ring2-${i}`}
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#0033FF]"
+                        style={{
+                            width: `${100 - i * 5}%`,
+                            height: `${100 - i * 5}%`,
+                            borderStyle: 'dashed',
+                            borderWidth: '2px',
+                            transform: `translate(-50%, -50%) rotateX(${40 + i * 2}deg) rotateY(${-i * 4}deg) translateZ(${-i * 5}px)`,
+                            opacity: 0.2 + (i * 0.05),
+                            boxShadow: '0 0 8px rgba(0, 51, 255, 0.4)'
+                        }}
+                    ></div>
+                ))}
+            </div>
+        </div>
+      </div>
+
       {/* Navbar */}
-      <nav className="border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-end relative">
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center justify-center">
-             <div className="flex items-center space-x-3">
-                <span className="w-4 h-4 rounded-full bg-indigo-600 animate-pulse"></span>
-                <span className="font-extrabold text-4xl text-slate-900 tracking-tight">
-                  i-AX <span className="text-slate-400 font-normal">Platform</span>
-                </span>
-             </div>
+      <nav className="border-b border-white/5 bg-black/20 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between relative">
+          <div className="flex items-center space-x-3">
+            <span className="w-3 h-3 rounded-full bg-[#0033FF] animate-pulse shadow-[0_0_10px_rgba(0,51,255,0.8)]"></span>
+            <span className="font-extrabold text-2xl text-[#E2E2E2] tracking-tight">
+              i-PIE <span className="text-[#E2E2E2]/50 font-normal">AX Platform</span>
+            </span>
           </div>
           <button 
             onClick={handleLoginClick}
-            className="text-sm font-semibold text-white bg-indigo-600 px-5 py-2.5 rounded-full hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200"
+            className="text-sm font-semibold text-[#E2E2E2] bg-white/5 border border-white/10 px-5 py-2 rounded-full hover:bg-[#0033FF]/20 hover:border-[#0033FF]/50 transition-all"
           >
             LOG IN
           </button>
         </div>
       </nav>
 
-      {/* Hero Section with AX Diagram */}
-      <main className="flex-1 relative">
-        {/* Background Gradients */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-50/50 rounded-full blur-3xl opacity-50 translate-x-1/3 -translate-y-1/4"></div>
-           <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-50/50 rounded-full blur-3xl opacity-50 -translate-x-1/3 translate-y-1/4"></div>
-           <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.2]"></div>
-        </div>
-
-        <div className="max-w-[1400px] mx-auto px-6 pt-12 pb-20 lg:pt-20 lg:pb-32 flex flex-col lg:flex-row items-center">
+      {/* Hero Section */}
+      <main className="flex-1 relative flex flex-col items-center justify-center px-6 z-10 py-20 min-h-[calc(100vh-64px)]">
+        <div className="w-full max-w-6xl mx-auto relative flex-1 flex flex-col justify-center text-center md:text-left">
+          
+          <div className="z-20 mt-10 md:mt-0 relative">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-[#E2E2E2] tracking-tight leading-[1.3] mb-8 animate-fade-in-up drop-shadow-2xl" style={{ wordBreak: 'keep-all' }}>
+              AI는 사람을 대신하는 것이 아니라,<br />
+              <span className="text-[#3366FF] drop-shadow-[0_0_25px_rgba(0,51,255,0.8)]">
+                역량을 한 단계 위로
+              </span><br />
+              끌어올리는 것입니다.
+            </h1>
             
-            {/* Left Column: Text */}
-            <div className="flex-1 text-center lg:text-left z-10 lg:pr-16 mb-16 lg:mb-0">
-                <div className="inline-flex items-center space-x-3 bg-white border border-slate-200 px-5 py-2 rounded-full mb-8 animate-fade-in-up shadow-sm">
-                    <div className="w-2.5 h-2.5 bg-blue-600 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.5)]"></div>
-                    <span className="text-slate-600 text-sm font-bold tracking-widest uppercase">IPARTNERS AX AGENCY</span>
-                </div>
-                
-                <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1] animate-fade-in-up delay-100">
-                    DIGITAL EVOLUTION, <br/>
-                    NOW <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">AI-DRIVEN.</span><br/>
-                    THAT'S IPARTNERS.
-                </h1>
-                
-                <p className="text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed animate-fade-in-up delay-200 text-justify break-keep">
-                    아이파트너즈의 <span className="font-bold text-slate-900">AI 방법론은 <span className="border-b-4 border-indigo-600">{'\'AI-First\''}</span></span> 사고방식을 기반으로 웹사이트 구축의 전 과정을 재설계하여, 단순 자동화를 넘어 <span className="font-bold text-indigo-600">창의적 가치</span>와 <span className="font-bold text-indigo-600">완성도</span>를 극대화하는 제작 표준입니다.
-                </p>
+            <p className="text-xl md:text-2xl text-[#E2E2E2]/90 font-medium tracking-wide animate-fade-in-up delay-100 mt-6" style={{ wordBreak: 'keep-all' }}>
+              1년차가 5년차의 시야를 갖고, 5년차가 10년차의 깊이를 갖습니다.
+            </p>
+
+            <div className="mt-16 animate-fade-in-up delay-200 flex justify-center md:justify-start">
+              <button 
+                onClick={handleLoginClick} 
+                className="group relative inline-flex items-center justify-center px-10 py-4 font-bold text-lg text-white bg-[#0033FF] rounded-full overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(0,51,255,0.6)] border border-[#0033FF]/50"
+              >
+                <span className="relative z-10 flex items-center">
+                  플랫폼 시작하기
+                  <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </span>
+                <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+              </button>
             </div>
-
-            {/* Right Column: AX Diagram */}
-            <div className="flex-1 relative w-full flex items-center justify-center lg:justify-end">
-                <div className="relative w-[500px] h-[500px] md:w-[600px] md:h-[600px] scale-[0.8] sm:scale-100 select-none pointer-events-none">
-                    
-                    {/* Rotating Wireframes */}
-                    <div className="absolute inset-0 border border-slate-200 rounded-sm animate-spin-slow-reverse" style={{ width: '75%', height: '75%', margin: 'auto' }}></div>
-                    <div className="absolute inset-0 border border-slate-300 rounded-sm animate-spin-slow" style={{ width: '90%', height: '90%', margin: 'auto' }}></div>
-
-                    {/* Connecting Lines (SVG) */}
-                    <svg className="absolute inset-0 w-full h-full z-0 opacity-40">
-                         {/* Top Right */}
-                         <line x1="50%" y1="50%" x2="80%" y2="20%" stroke="#94a3b8" strokeWidth="1" strokeDasharray="6 4" />
-                         {/* Right */}
-                         <line x1="50%" y1="50%" x2="90%" y2="50%" stroke="#94a3b8" strokeWidth="1" strokeDasharray="6 4" />
-                         {/* Bottom Right */}
-                         <line x1="50%" y1="50%" x2="80%" y2="80%" stroke="#94a3b8" strokeWidth="1" strokeDasharray="6 4" />
-                         {/* Bottom */}
-                         <line x1="50%" y1="50%" x2="50%" y2="90%" stroke="#94a3b8" strokeWidth="1" strokeDasharray="6 4" />
-                         {/* Bottom Left */}
-                         <line x1="50%" y1="50%" x2="20%" y2="75%" stroke="#94a3b8" strokeWidth="1" strokeDasharray="6 4" />
-                         {/* Left */}
-                         <line x1="50%" y1="50%" x2="10%" y2="40%" stroke="#94a3b8" strokeWidth="1" strokeDasharray="6 4" />
-                    </svg>
-
-                    {/* Central Diamond */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 md:w-64 md:h-64 bg-gradient-to-br from-indigo-500 via-blue-600 to-purple-700 rotate-45 shadow-2xl shadow-indigo-500/40 z-20 flex items-center justify-center overflow-hidden border-4 border-white/10">
-                         <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)', backgroundSize: '16px 16px' }}></div>
-                         <div className="absolute inset-0 bg-gradient-to-tr from-transparent to-white/20"></div>
-                         <span className="text-5xl md:text-6xl font-black text-white -rotate-45 tracking-widest drop-shadow-md">AX</span>
-                    </div>
-
-                    {/* Floating Nodes */}
-                    
-                    {/* I-CONSULTANT (Top Right) */}
-                    <div className="absolute top-[15%] right-[10%] animate-float z-30">
-                        <div className="bg-white border border-slate-100 shadow-xl px-4 py-2 rounded-lg flex items-center space-x-3 transition-transform hover:scale-110">
-                             <div className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]"></div>
-                             <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">I-CONSULTANT</span>
-                        </div>
-                    </div>
-
-                    {/* I-CREATIVE (Right) */}
-                    <div className="absolute top-[48%] right-[-5%] animate-float-delayed z-30">
-                        <div className="bg-white border border-slate-100 shadow-xl px-4 py-2 rounded-lg flex items-center space-x-3 transition-transform hover:scale-110">
-                             <div className="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.6)]"></div>
-                             <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">I-CREATIVE</span>
-                        </div>
-                    </div>
-
-                    {/* I-INTELLIGENCE (Bottom Right) */}
-                    <div className="absolute bottom-[15%] right-[10%] animate-float z-30">
-                         <div className="bg-white border border-slate-100 shadow-xl px-4 py-2 rounded-lg flex items-center space-x-3 transition-transform hover:scale-110">
-                             <div className="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.6)]"></div>
-                             <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">I-INTELLIGENCE</span>
-                        </div>
-                    </div>
-
-                    {/* I-AUTODEV (Bottom) */}
-                    <div className="absolute bottom-[5%] left-1/2 -translate-x-1/2 animate-float-delayed z-30">
-                         <div className="bg-white border border-slate-100 shadow-xl px-4 py-2 rounded-lg flex items-center space-x-3 transition-transform hover:scale-110">
-                             <div className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.6)]"></div>
-                             <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">I-AUTODEV</span>
-                        </div>
-                    </div>
-
-                    {/* I-DATA (Bottom Left) */}
-                    <div className="absolute bottom-[20%] left-[5%] animate-float z-30">
-                         <div className="bg-white border border-slate-100 shadow-xl px-4 py-2 rounded-lg flex items-center space-x-3 transition-transform hover:scale-110">
-                             <div className="w-2.5 h-2.5 rounded-full bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.6)]"></div>
-                             <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">I-DATA</span>
-                        </div>
-                    </div>
-
-                    {/* I-SEARCH (Left) */}
-                    <div className="absolute top-[35%] left-[-5%] animate-float-delayed z-30">
-                         <div className="bg-white border border-slate-100 shadow-xl px-4 py-2 rounded-lg flex items-center space-x-3 transition-transform hover:scale-110">
-                             <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.6)]"></div>
-                             <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">I-SEARCH</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+          </div>
         </div>
       </main>
       
       {/* Login Modal */}
       {isLoginModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden relative animate-fade-in-up">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+          <div className="bg-[#000510] border border-[#0033FF]/20 rounded-3xl shadow-[0_0_50px_rgba(0,51,255,0.15)] w-full max-w-md overflow-hidden relative animate-fade-in-up">
             <button 
               onClick={handleCloseModal}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors p-1"
+              className="absolute top-5 right-5 text-[#E2E2E2]/40 hover:text-[#E2E2E2] transition-colors p-1 bg-white/5 rounded-full hover:bg-white/10"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5" />
             </button>
             
-            <div className="p-8 pt-10">
+            <div className="p-8 pt-12">
               <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl mb-4">
-                  <User className="w-6 h-6" />
+                <div className="inline-flex items-center justify-center w-14 h-14 bg-[#0033FF]/10 text-[#0033FF] rounded-2xl mb-5 border border-[#0033FF]/20 shadow-[0_0_20px_rgba(0,51,255,0.2)]">
+                  <User className="w-7 h-7" />
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900">Sign In</h2>
-                <p className="text-slate-500 text-sm mt-1">i-Partners 솔루션에 오신 것을 환영합니다.</p>
+                <h2 className="text-3xl font-bold text-[#E2E2E2] tracking-tight">Sign In</h2>
+                <p className="text-[#E2E2E2]/50 text-sm mt-2">i-PIE AX 플랫폼에 오신 것을 환영합니다.</p>
               </div>
 
-              <form onSubmit={handleSubmitLogin} className="space-y-4">
+              <form onSubmit={handleSubmitLogin} className="space-y-5">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">아이디</label>
+                  <label className="block text-sm font-bold text-[#E2E2E2]/70 mb-2">아이디</label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#E2E2E2]/30" />
                     <input 
                       type="text" 
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-slate-900"
+                      className="w-full pl-12 pr-4 py-3.5 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0033FF]/50 focus:border-[#0033FF] transition-all font-medium text-[#E2E2E2] placeholder-[#E2E2E2]/20"
                       placeholder="아이디를 입력하세요"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">비밀번호</label>
+                  <label className="block text-sm font-bold text-[#E2E2E2]/70 mb-2">비밀번호</label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#E2E2E2]/30" />
                     <input 
                       type="password" 
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-slate-900"
+                      className="w-full pl-12 pr-4 py-3.5 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0033FF]/50 focus:border-[#0033FF] transition-all font-medium text-[#E2E2E2] placeholder-[#E2E2E2]/20"
                       placeholder="비밀번호를 입력하세요"
                     />
                   </div>
                 </div>
 
                 {error && (
-                  <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg text-center font-medium border border-red-100 animate-pulse">
+                  <div className="bg-red-500/10 text-red-400 text-sm p-3.5 rounded-xl text-center font-medium border border-red-500/20 animate-pulse">
                     {error}
                   </div>
                 )}
@@ -241,7 +213,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                 <button 
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 mt-4 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                  className="w-full bg-[#0033FF] text-white font-bold py-4 rounded-xl hover:bg-[#0022CC] transition-all shadow-[0_0_20px_rgba(0,51,255,0.4)] hover:shadow-[0_0_30px_rgba(0,51,255,0.6)] mt-6 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                 >
                   {isLoading ? (
                     <>
@@ -254,8 +226,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                 </button>
               </form>
             </div>
-            <div className="bg-slate-50 px-8 py-4 border-t border-slate-100 text-center">
-                <p className="text-xs text-slate-400">
+            <div className="bg-white/5 px-8 py-5 border-t border-white/5 text-center">
+                <p className="text-xs text-[#E2E2E2]/40">
                     계정 문의: support@ipartners.co.kr
                 </p>
             </div>
@@ -264,8 +236,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       )}
 
       {/* Footer */}
-      <footer className="bg-white py-12 border-t border-slate-200 text-center">
-         <p className="text-slate-500 text-sm">© 2026 IPARTNERS All rights reserved.</p>
+      <footer className="bg-transparent py-8 text-center relative z-10 border-t border-white/5">
+         <p className="text-[#E2E2E2]/30 text-xs">© 2026 IPARTNERS All rights reserved.</p>
       </footer>
     </div>
   );
