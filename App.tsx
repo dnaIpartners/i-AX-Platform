@@ -4,7 +4,6 @@ import { ChatPage } from './components/ChatPage';
 import { OmniSearchPage } from './components/OmniSearchPage';
 import { TubeInsightPage } from './components/TubeInsightPage';
 import { ContentInsightPage } from './components/ContentInsightPage';
-import { LandingPage } from './components/LandingPage';
 import { KeySettingsModal } from './components/KeySettingsModal';
 
 const SIDEBAR_MENU: SidebarMenuItem[] = [
@@ -31,18 +30,8 @@ const SIDEBAR_MENU: SidebarMenuItem[] = [
 ];
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeModule, setActiveModule] = useState<string>('omni-search');
   const [isKeySettingsOpen, setIsKeySettingsOpen] = useState(false);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setActiveModule('omni-search');
-  };
 
   // Helper function to render content based on active module
   const renderContent = () => {
@@ -61,11 +50,6 @@ const App: React.FC = () => {
     return null;
   };
 
-  // Login Flow
-  if (!isAuthenticated) {
-    return <LandingPage onLogin={handleLogin} />;
-  }
-
   // Main Application Flow
   return (
     <div className="flex h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900 overflow-hidden">
@@ -79,7 +63,6 @@ const App: React.FC = () => {
         onLogoClick={() => {
             setActiveModule('omni-search');
         }}
-        onLogout={handleLogout}
         onOpenSettings={() => setIsKeySettingsOpen(true)}
       />
 

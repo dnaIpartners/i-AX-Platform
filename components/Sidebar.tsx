@@ -1,5 +1,5 @@
 import React from 'react';
-import { Circle, LogOut, Settings } from 'lucide-react';
+import { Circle, Settings } from 'lucide-react';
 
 export interface SidebarMenuItem {
   id: string;
@@ -13,11 +13,10 @@ interface SidebarProps {
   activeModule: string;
   onModuleChange: (id: string) => void;
   onLogoClick?: () => void;
-  onLogout?: () => void;
   onOpenSettings?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeModule, onModuleChange, onLogoClick, onLogout, onOpenSettings }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeModule, onModuleChange, onLogoClick, onOpenSettings }) => {
   return (
     <aside className="w-64 bg-white border-r border-slate-200 flex flex-col flex-shrink-0 z-20 shadow-sm h-full font-sans">
         <div className="p-5 border-b border-slate-100 flex items-center justify-between flex-shrink-0">
@@ -26,7 +25,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeModule, onMod
               className="text-2xl font-black tracking-tighter cursor-pointer select-none flex items-center"
               style={{ color: '#001641' }}
             >
-              IPΛRTNERS
+              NX Agent
             </div>
             <div className="flex items-center space-x-1">
                 <button
@@ -35,13 +34,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeModule, onMod
                     className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all"
                 >
                     <Settings className="w-4 h-4" />
-                </button>
-                <button
-                    onClick={onLogout}
-                    title="초기 화면으로 이동 (로그아웃)"
-                    className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-all"
-                >
-                    <LogOut className="w-4 h-4" />
                 </button>
             </div>
         </div>
@@ -84,7 +76,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeModule, onMod
 
         <div className="p-5 border-t border-slate-100 bg-slate-50/50 flex-shrink-0">
             <p className="text-[10px] font-bold text-slate-900 uppercase tracking-wide mb-1">TARGET:</p>
-            <p className="text-xs text-slate-600 font-medium">AI eXperience Lab</p>
+            <p className="text-xs text-slate-600 font-medium">Next Experience Lab</p>
         </div>
       </aside>
   );
